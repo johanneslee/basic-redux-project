@@ -19,7 +19,7 @@ class Header extends Component {
     if(nextProps.deletedPost.error && nextProps.deletedPost.error.message) {//delete failure
       alert(nextProps.deletedPost.error.message || 'Could not delete. Please try again.');
     } else if(nextProps.deletedPost.post && !nextProps.deletedPost.error) {//delete success
-      this.context.router.push('/');
+      this.context.router.history.push('/');
     }
   }
 
@@ -57,7 +57,7 @@ class Header extends Component {
       			<li style={{paddingRight: '10px'}} style={{color:'#337ab7',  fontSize: '17px'}}  role="presentation"><Link to="/">Back To Index</Link></li>
     			</ul>
     			<div className="navbar-form navbar-right" style={{paddingRight: '50px'}}>
-            <button className="btn btn-warning pull-xs-right"  onClick={()=> {this.props.onDeleteClick()}}>Delete Post</button>
+            <button className="btn btn-warning pull-xs-right" onClick={()=> {this.props.onDeleteClick()}}>Delete Post</button>
       		</div>
     	  </div>
   	  );
@@ -84,9 +84,10 @@ function mapStateToProps(state) {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onDeleteClick: () => {
-      dispatch(actions.deletePost(ownProps.postId, token)).then((response) => {
-        !response.error ? dispatch(actions.deletePostSuccess(response.payload)) : dispatch(actions.deletePostFailure(response.payload));
-      });
+      dispatch(actions.deletePost(ownProps.postId)).payload.
+        then((response) => {
+          !response.error ? dispatch(actions.deletePostSuccess(response)) : dispatch(actions.deletePostFailure(response));
+        });
     },
     resetMe: () =>{
       dispatch(actions.resetDeletedPost());

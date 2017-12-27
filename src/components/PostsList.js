@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 class PostsList extends Component {
@@ -18,7 +19,9 @@ class PostsList extends Component {
     return posts.map((post) => {
       return (
         <li className="list-group-item" key={post.id}>
-          <h3 className="list-group-item-heading">{post.title}</h3>
+          <Link style={{color:'black'}} to={"posts/" + post.id}>
+            <h3 className="list-group-item-heading">{post.title}</h3>
+          </Link>
         </li>
       )
     });

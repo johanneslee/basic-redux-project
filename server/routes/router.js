@@ -22,19 +22,21 @@ router.get('/posts', (req, res, next) => {
   });
 });
 
-router.post('/posts', function(req, res, next) {
-  var body = req.body;
-  var title = body.title;
-  var categories = body.categories;
-  var content = body.content;
+router.post('/posts', (req, res, next) => {
+  let body = req.body;
+  let id = body.id;
+  let title = body.title;
+  let categories = body.categories;
+  let content = body.content;
 
-  if (!title || !categories || !content) {
+  if (!id || !title || !categories || !content) {
     return res.status(400).json({
-      message: 'Error title, categories and content are all required!'
+      message: 'Error id, title, categories and content are all required!'
     });
   }
 
   models.post.create({
+    id: id,
     title: title,
     categories: categories,
     content: content
@@ -50,8 +52,8 @@ router.post('/posts', function(req, res, next) {
   });
 });
 
-router.get('/posts/:id', function(req, res, next) {
-  models.post.findOne({ where: {id: req.params.id} }).then((post) => {
+router.get('/posts/:id', (req, res, next) => {
+  models.post.findOne({ where: { id: req.params.id } }).then((post) => {
     if (!post) {
       return res.status(404).json({
         message: 'Post not found'
@@ -67,35 +69,38 @@ router.get('/posts/:id', function(req, res, next) {
   });
 });
 
-/*
-router.delete('/posts/:id', function(req, res, next) {
-  var id = req.params.id;
-  if (id.length != 24) {
-    return res.json({
-      message: 'id must be a valid 24 char hex string'
-    });
-  }
+router.delete('/posts/:id', (req, res, next) => {
+  let id = req.params.id;
 
-  var id = mongoose.Types.ObjectId(req.params.id); //convert to objectid
-  Post.findByIdAndRemove(id, function(err, post) {
-    if (err)
-      throw err;
-
-    if (!post) {
-      return res.status(404).json({
-        message: 'Could not delete post'
+  models.post.destroy({ where: { id: req.params.id } }).then(() => {
+    models.post.findOne({ where: { id: req.params.id } }).then((post) => {
+      if (!post) {
+        return res.json({
+          result: 'Post was deleted'
+        });
+      }
+      else {
+        return res.status(500).json({
+          message: 'Could not retrieve delete w/ that id'
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(500).json({
+        message: 'Could not retrieve delete w/ that id'
       });
-    }
-
-    res.json({
-      result: 'Post was deleted'
     });
-
+  })
+  .catch((err) => {
+    console.log(err);
+    return res.status(500).json({
+      message: 'Could not retrieve delete w/ that id'
+    });
   });
 });
-*/
 
-router.post('/posts/validate/fields', function(req, res, next) {
+router.post('/posts/validate/fields', (req, res, next) => {
   let body = req.body;
   let title = body.title ? body.title.trim() : '';
 

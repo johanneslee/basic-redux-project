@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { reduxForm, Field, SubmissionError } from 'redux-form';
 import * as actions from '../actions'
 import renderField from './renderField';
@@ -23,31 +23,6 @@ function validate(values) {
 
   return errors;
 }
-
-/*
-//For instant async server validation
-const asyncValidate = (values, dispatch) => {
-  return dispatch(actions.validatePostFields(values)).payload
-    .then((result) => {
-      //Note: Error's "data" is in result.payload.response.data
-      // success's "data" is in result.payload.data
-      if (!result.payload.response) { //1st onblur
-        return;
-      }
-
-      let {data, status} = result.payload.response;
-      //if status is not 200 or any one of the fields exist, then there is a field error
-      if (response.payload.status != 200 || data.title || data.categories || data.description) {
-        //let other components know of error by updating the redux` state
-        dispatch(actions.validatePostFieldsFailure(data));
-        throw data; //throw error
-      } else {
-        //let other components know that everything is fine by updating the redux` state
-        dispatch(actions.validatePostFieldsSuccess(data)); //ps: this is same as dispatching RESET_USER_FIELDS
-      }
-    });
-};
-*/
 
 //For any field errors upon submission (i.e. not instant check)
 const validateAndCreatePost = (values, dispatch) => {
@@ -72,7 +47,7 @@ class PostWrite extends Component {
   componentWillMount() {
     //Important! If your component is navigating based on some global state(from say componentWillReceiveProps)
     //always reset that global state back to null when you REMOUNT
-    this.props.resetMe();
+    this.props.handleResetMe();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,7 +109,7 @@ class PostWrite extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    resetMe: () => {
+    handleResetMe: () => {
       dispatch(actions.resetNewPost());
     }
   };

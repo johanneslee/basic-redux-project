@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Header from '../components/Header.js';
-//import ValidateEmailAlertContainer from '../containers/ValidateEmailAlertContainer.js';
 import PostsList from '../components/PostsList.js';
 
 export default class PostsListPage extends Component {

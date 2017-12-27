@@ -37,17 +37,19 @@ router.get('/posts', function (req, res, next) {
 
 router.post('/posts', function (req, res, next) {
   var body = req.body;
+  var id = body.id;
   var title = body.title;
   var categories = body.categories;
   var content = body.content;
 
-  if (!title || !categories || !content) {
+  if (!id || !title || !categories || !content) {
     return res.status(400).json({
-      message: 'Error title, categories and content are all required!'
+      message: 'Error id, title, categories and content are all required!'
     });
   }
 
   _models2.default.post.create({
+    id: id,
     title: title,
     categories: categories,
     content: content
@@ -77,33 +79,33 @@ router.get('/posts/:id', function (req, res, next) {
   });
 });
 
-/*
-router.delete('/posts/:id', function(req, res, next) {
+router.delete('/posts/:id', function (req, res, next) {
   var id = req.params.id;
-  if (id.length != 24) {
-    return res.json({
-      message: 'id must be a valid 24 char hex string'
-    });
-  }
 
-  var id = mongoose.Types.ObjectId(req.params.id); //convert to objectid
-  Post.findByIdAndRemove(id, function(err, post) {
-    if (err)
-      throw err;
-
-    if (!post) {
-      return res.status(404).json({
-        message: 'Could not delete post'
+  _models2.default.post.destroy({ where: { id: req.params.id } }).then(function () {
+    _models2.default.post.findOne({ where: { id: req.params.id } }).then(function (post) {
+      if (!post) {
+        return res.json({
+          result: 'Post was deleted'
+        });
+      } else {
+        return res.status(500).json({
+          message: 'Could not retrieve delete w/ that id'
+        });
+      }
+    }).catch(function (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: 'Could not retrieve delete w/ that id'
       });
-    }
-
-    res.json({
-      result: 'Post was deleted'
     });
-
+  }).catch(function (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: 'Could not retrieve delete w/ that id'
+    });
   });
 });
-*/
 
 router.post('/posts/validate/fields', function (req, res, next) {
   var body = req.body;
