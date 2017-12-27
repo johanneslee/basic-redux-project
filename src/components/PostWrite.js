@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
+import { reduxForm, Field, SubmissionError } from 'redux-form';
 import * as actions from '../actions'
-//import { reduxForm, Field, SubmissionError } from 'redux-form';
-//import renderField from './renderField';
-//import renderTextArea from './renderTextArea';
+import renderField from './renderField';
+import renderTextArea from './renderTextArea';
 
 //Client side validation
 function validate(values) {
@@ -24,9 +24,10 @@ function validate(values) {
   return errors;
 }
 
+/*
 //For instant async server validation
 const asyncValidate = (values, dispatch) => {
-  return dispatch(actions.validatePostFields(values))
+  return dispatch(actions.validatePostFields(values)).payload
     .then((result) => {
       //Note: Error's "data" is in result.payload.response.data
       // success's "data" is in result.payload.data
@@ -46,23 +47,24 @@ const asyncValidate = (values, dispatch) => {
       }
     });
 };
+*/
 
 //For any field errors upon submission (i.e. not instant check)
 const validateAndCreatePost = (values, dispatch) => {
-  return dispatch(actions.createPost(values))
+  return dispatch(actions.createPost(values)).payload
     .then(result => {
-      // Note: Error's "data" is in result.payload.response.data (inside "response")
-      // success's "data" is in result.payload.data
-      if (result.payload.response && result.payload.response.status !== 200) {
-        dispatch(actions.createPostFailure(result.payload.response.data));
-        throw new SubmissionError(result.payload.response.data);
+      // Note: Error's "data" is in result.response.data (inside "response")
+      // success's "data" is in result.data
+      if (result.response && result.response.status !== 200) {
+        dispatch(actions.createPostFailure(result.response.data));
+        throw new SubmissionError(result.response.data);
       }
       //let other components know that everything is fine by updating the redux` state
-      dispatch(actions.createPostSuccess(result.payload.data)); //ps: this is same as dispatching RESET_USER_FIELDS
+      dispatch(actions.createPostSuccess(result.data)); //ps: this is same as dispatching RESET_USER_FIELDS
     });
 }
 
-class PostsForm extends Component {
+class PostWrite extends Component {
   static contextTypes = {
     router: PropTypes.object
   };
@@ -75,7 +77,8 @@ class PostsForm extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.newPost.post && !nextProps.newPost.error) {
-      this.context.router.push('/');
+      //to navigate using context in react-router v4:
+      this.context.router.history.push('/');
     }
   }
 
@@ -96,23 +99,21 @@ class PostsForm extends Component {
     return (
       <div className='container'>
         { this.renderError(newPost) }
-        {
-        /*
-        <form onSubmit={handleSubmit(validateAndCreatePost)}>
+        <form onSubmit={ handleSubmit(validateAndCreatePost) }>
           <Field
-                 name="title"
-                 type="text"
-                 component={ renderField }
-                 label="Title*" />
+            name="title"
+            type="text"
+            component={ renderField }
+            label="Title*" />
           <Field
-                 name="categories"
-                 type="text"
-                 component={ renderField }
-                 label="Categories*" />
+            name="categories"
+            type="text"
+            component={ renderField }
+            label="Categories*" />
           <Field
-                 name="content"
-                 component={ renderTextArea }
-                 label="Content*" />
+            name="content"
+            component={ renderTextArea }
+            label="Content*" />
           <div>
             <button
                     type="submit"
@@ -126,34 +127,28 @@ class PostsForm extends Component {
             </Link>
           </div>
         </form>
-        */
-        }
       </div>
     )
   }
 }
-
-/*
-export default reduxForm({
-  form: 'PostsForm', // a unique identifier for this form
-  validate, // <--- validation function given to redux-form
-  asyncValidate
-})(PostsForm)
-*/
 
 const mapDispatchToProps = (dispatch) => {
   return {
     resetMe: () => {
       dispatch(actions.resetNewPost());
     }
-  }
-}
+  };
+};
 
 
-function mapStateToProps(state, ownProps) {
+const mapStateToProps = (state, ownProps) => {
   return {
     newPost: state.posts.newPost
   };
-}
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostsForm);
+export default reduxForm({
+  form: 'PostWrite', // a unique identifier for this form
+  validate // <--- validation function given to redux-form
+  //asyncValidate
+})(connect(mapStateToProps, mapDispatchToProps)(PostWrite));

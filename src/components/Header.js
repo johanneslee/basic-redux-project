@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 
@@ -25,20 +25,22 @@ class Header extends Component {
 
 	renderLinks() {
     const { type } = this.props;
-		if(type === 'posts_index') {
-       return (
+
+    if(type === "posts_index") {
+      return (
         <div className="container">
-          <ul className="nav  nav-pills navbar-right">
+          <ul className="nav nav-pills navbar-right">
       			<li style={{paddingRight: '10px'}} role="presentation">
-              <Link style={{color:'#337ab7',  fontSize: '17px'}} to="/posts/new">
+              <Link to="/posts/new" style={{color:'#337ab7',  fontSize: '17px'}}>
                 New Post
               </Link>
             </li>
     			</ul>
         </div>
-  		 );
-  	} else if(type === 'posts_new') {
-       return (
+  		);
+  	}
+    else if(type === "posts_new") {
+      return (
         <div className="container">
           <ul className="nav nav-pills navbar-left">
       			<li style={{paddingRight: '10px'}} role="presentation">
@@ -46,32 +48,30 @@ class Header extends Component {
       			</li>
     			</ul>
         </div>
-  		 );
-  	} else if(type === 'posts_show') {
-  			return (
-  			 <div className="container">
+  		);
+  	}
+    else if(type === "posts_show") {
+  		return (
+  	    <div className="container">
     			<ul className="nav nav-pills navbar-left">
       			<li style={{paddingRight: '10px'}} style={{color:'#337ab7',  fontSize: '17px'}}  role="presentation"><Link to="/">Back To Index</Link></li>
     			</ul>
-
     			<div className="navbar-form navbar-right" style={{paddingRight: '50px'}}>
             <button className="btn btn-warning pull-xs-right"  onClick={()=> {this.props.onDeleteClick()}}>Delete Post</button>
       		</div>
-    	   </div>
-  		);
+    	  </div>
+  	  );
   	}
-	};
+	}
 
 	render() {
-			return (
-			 <nav className="navbar navbar-default navbar-static-top">
-			      <div id="navbar" className="navbar-collapse collapse">
-			      {
-              //this.renderLinks()
-            }
-	      		</div>
-			 </nav>
-			);
+    return (
+		  <nav className="navbar navbar-default navbar-static-top">
+			  <div id="navbar" className="navbar-collapse collapse">
+          {this.renderLinks()}
+        </div>
+		  </nav>
+		);
 	}
 }
 

@@ -3,7 +3,7 @@ import Header from '../components/Header.js';
 //import ValidateEmailAlertContainer from '../containers/ValidateEmailAlertContainer.js';
 import PostsList from '../components/PostsList.js';
 
-class PostsListPage extends Component {
+export default class PostsListPage extends Component {
   render() {
     return (
       <div>
@@ -13,7 +13,3 @@ class PostsListPage extends Component {
     );
   }
 }
-
-//<ValidateEmailAlertContainer/>
-
-export default PostsListPage;

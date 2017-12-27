@@ -41,11 +41,12 @@ app.set('views', __dirname + '/public');
 app.set('view engine', 'ejs');
 app.engine('html', _ejs2.default.renderFile);
 
+app.use(_bodyParser2.default.urlencoded({ extended: true }));
+app.use(_bodyParser2.default.json());
+
 // 경로 '/' 로 들어오는 요청들은 public 폴더로 정적 라우팅 된다.
 app.use('/', _express2.default.static('public'));
 app.use('/api/', _router2.default);
-app.use(_bodyParser2.default.urlencoded({ extended: true }));
-app.use(_bodyParser2.default.json());
 
 // NODE_ENV 값이 development 이면 webpack-dev-server를 실행한다.
 if (process.env.NODE_ENV == 'development') {

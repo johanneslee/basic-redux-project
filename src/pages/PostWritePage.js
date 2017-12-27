@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Header from '../components/Header.js';
-import PostWrite from '../components/PostWrite.js';
+import Header from '../components/Header';
+import PostWrite from '../components/PostWrite';
 
-class PostWritePage extends Component {
+export default class PostWritePage extends Component {
   render() {
     return (
       <div>
@@ -12,6 +12,3 @@ class PostWritePage extends Component {
     );
   }
 }
-
-
-export default PostWritePage;

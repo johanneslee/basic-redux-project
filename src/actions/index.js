@@ -1,5 +1,6 @@
 import * as types from './ActionTypes';
 import axios from 'axios';
+import qs from 'qs';
 
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
@@ -29,7 +30,7 @@ export function fetchPostsFailure(error) {
 export function createPost(props) {
   return {
     type: types.CREATE_POST,
-    payload: axios.post('/api/posts', props)
+    payload: axios.post('/api/posts', qs.stringify(props))
   };
 }
 
@@ -58,7 +59,7 @@ export function validatePostFields(props) {
   //note: we cant have /posts/validateFields because it'll match /posts/:id path!
   return {
     type: types.VALIDATE_POST_FIELDS,
-    payload: axios.post('/api/posts/validate/fields', props)
+    payload: axios.post('/api/posts/validate/fields', qs.stringify(props))
   };
 }
 

@@ -35,6 +35,32 @@ router.get('/posts', function (req, res, next) {
   });
 });
 
+router.post('/posts', function (req, res, next) {
+  var body = req.body;
+  var title = body.title;
+  var categories = body.categories;
+  var content = body.content;
+
+  if (!title || !categories || !content) {
+    return res.status(400).json({
+      message: 'Error title, categories and content are all required!'
+    });
+  }
+
+  _models2.default.post.create({
+    title: title,
+    categories: categories,
+    content: content
+  }).then(function (post) {
+    res.json(post);
+  }).catch(function (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: 'Could not save post'
+    });
+  });
+});
+
 router.get('/posts/:id', function (req, res, next) {
   _models2.default.post.findOne({ where: { id: req.params.id } }).then(function (post) {
     if (!post) {
@@ -47,6 +73,57 @@ router.get('/posts/:id', function (req, res, next) {
     console.log(err);
     return res.status(500).json({
       message: 'Could not retrieve post w/ that id'
+    });
+  });
+});
+
+/*
+router.delete('/posts/:id', function(req, res, next) {
+  var id = req.params.id;
+  if (id.length != 24) {
+    return res.json({
+      message: 'id must be a valid 24 char hex string'
+    });
+  }
+
+  var id = mongoose.Types.ObjectId(req.params.id); //convert to objectid
+  Post.findByIdAndRemove(id, function(err, post) {
+    if (err)
+      throw err;
+
+    if (!post) {
+      return res.status(404).json({
+        message: 'Could not delete post'
+      });
+    }
+
+    res.json({
+      result: 'Post was deleted'
+    });
+
+  });
+});
+*/
+
+router.post('/posts/validate/fields', function (req, res, next) {
+  var body = req.body;
+  var title = body.title ? body.title.trim() : '';
+
+  console.log("title: " + title);
+
+  _models2.default.post.findOne({ where: { title: title } }).then(function (post) {
+    console.log(post);
+    if (post) {
+      return res.status(200).json({
+        title: 'Title "' + title + '" is not unique!'
+      });
+    } else {
+      return res.status(200).json({});
+    }
+  }).catch(function (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: 'Could not find post for title uniqueness'
     });
   });
 });

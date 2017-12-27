@@ -18,13 +18,14 @@ var _sequelize2 = _interopRequireDefault(_sequelize);
 
 var _config = require('../config/config');
 
-var _config2 = _interopRequireDefault(_config);
+var config = _interopRequireWildcard(_config);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var env = process.env.NODE_ENV || "development";
-var config = _config2.default[env];
-var sequelize = new _sequelize2.default("mysql://b0fbbd0580f94e:d7df589b@us-cdbr-iron-east-05.cleardb.net/heroku_f55f228bd4e98f2?reconnect=true");
+var sequelize = new _sequelize2.default(config.ADDRESS);
 var db = {};
 
 _fs2.default.readdirSync(__dirname).filter(function (file) {
