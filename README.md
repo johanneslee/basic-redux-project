@@ -16,12 +16,12 @@
 * Axios
 
 ## Getting Started
-'''
+```
 git clone https://github.com/johanneslee/basic-redux-project
 cd basic-redux-project
 npm install
 npm run build && npm run start
-'''
+```
 
 Before use npm command,
 * Create config/config.js
