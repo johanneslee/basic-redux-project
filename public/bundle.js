@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "3314c67f293efc2c3d5d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c3884965c117f1263d28"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -45709,7 +45709,7 @@ var PostDetails = function (_Component) {
           post.categories
         ),
         _react2.default.createElement(
-          'p',
+          'pre',
           null,
           post.content
         )
