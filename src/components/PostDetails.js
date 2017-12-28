@@ -27,10 +27,10 @@ class PostDetails extends Component {
     const { post, loading, error } = this.props.activePost;
 
     if (loading) {
-      return <div className="container">Loading...</div>;
+      return <div className="container"><h3>Loading...</h3></div>;
     }
     else if(error) {
-      return <div className="alert alert-danger">{error.message}</div>
+      return <div className="alert alert-danger"><h3>{error.message}</h3></div>
     }
     else if(!post) {
       return <span />
@@ -41,14 +41,6 @@ class PostDetails extends Component {
         <h3>{post.title}</h3>
         <h6>Categories: {post.categories}</h6>
         <p>{post.content}</p>
-      </div>
-    );
-
-    return (
-      <div className="container">
-        <h3>title</h3>
-        <h6>categories</h6>
-        <p>content</p>
       </div>
     );
   }

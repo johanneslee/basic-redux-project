@@ -1,5 +1,9 @@
 # Basic-redux-project
 
+## About
+* This is based on https://github.com/rajaraodv/react-redux-blog
+* This is for studying React-Redux, Mysql-Sequelize and Rest API
+
 ## Prerequisite
 * Node.js v8
 * Npm v5
