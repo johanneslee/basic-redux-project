@@ -1,6 +1,5 @@
 import * as types from './ActionTypes';
 import axios from 'axios';
-import qs from 'qs';
 
 const ROOT_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:3000/api' : '/api';
 
@@ -30,7 +29,7 @@ export function fetchPostsFailure(error) {
 export function createPost(props) {
   return {
     type: types.CREATE_POST,
-    payload: axios.post('/api/posts', qs.stringify(props))
+    payload: axios.post('/api/posts', props)
   };
 }
 
@@ -51,34 +50,6 @@ export function createPostFailure(error) {
 export function resetNewPost() {
   return {
     type: types.RESET_NEW_POST
-  };
-}
-
-//Validate post fields like Title, Categries on the server
-export function validatePostFields(props) {
-  //note: we cant have /posts/validateFields because it'll match /posts/:id path!
-  return {
-    type: types.VALIDATE_POST_FIELDS,
-    payload: axios.post('/api/posts/validate/fields', qs.stringify(props))
-  };
-}
-
-export function validatePostFieldsSuccess() {
-  return {
-    type: types.VALIDATE_POST_FIELDS_SUCCESS
-  };
-}
-
-export function validatePostFieldsFailure(error) {
-  return {
-    type: types.VALIDATE_POST_FIELDS_FAILURE,
-    payload: error
-  };
-}
-
-export function resetPostFields() {
-  return {
-    type: types.RESET_POST_FIELDS
   };
 }
 

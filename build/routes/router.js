@@ -37,19 +37,17 @@ router.get('/posts', function (req, res, next) {
 
 router.post('/posts', function (req, res, next) {
   var body = req.body;
-  var id = body.id;
   var title = body.title;
   var categories = body.categories;
   var content = body.content;
 
-  if (!id || !title || !categories || !content) {
+  if (!title || !categories || !content) {
     return res.status(400).json({
-      message: 'Error id, title, categories and content are all required!'
+      message: 'Error title, categories and content are all required!'
     });
   }
 
   _models2.default.post.create({
-    id: id,
     title: title,
     categories: categories,
     content: content
