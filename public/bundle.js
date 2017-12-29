@@ -61,7 +61,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c3884965c117f1263d28"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "a56e7965b1e47ce76861"; // eslint-disable-line no-unused-vars
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule; // eslint-disable-line no-unused-vars
@@ -36919,7 +36919,7 @@ var PostsList = function (_Component) {
       if (loading) {
         return _react2.default.createElement(
           'div',
-          null,
+          { className: 'container' },
           _react2.default.createElement(
             'h1',
             null,
