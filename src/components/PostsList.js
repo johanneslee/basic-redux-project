@@ -32,7 +32,7 @@ class PostsList extends Component {
 
     if(loading) {
       return (
-        <div>
+        <div className="container">
           <h1>Posts</h1>
           <h3>Loading...</h3>
         </div>
